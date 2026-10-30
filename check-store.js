@@ -1,0 +1,133 @@
+var LAHR = require("./store.js");
+
+function memory() {
+  var map = {};
+  return {
+    getItem: function (key) { return Object.prototype.hasOwnProperty.call(map, key) ? map[key] : null; },
+    setItem: function (key, value) { map[key] = String(value); },
+  };
+}
+
+function assert(cond, message) {
+  if (!cond) throw new Error(message);
+}
+
+var year = 2026;
+var store = LAHR.createStore(memory(), function () {
+  return { year: year, month: 10, iso: year + "-10-28T12:00:00" };
+});
+
+assert(LAHR.twoPercentCents(40000) === 800, "2 Prozent von 400");
+assert(LAHR.twoPercentCents(110000) === 2200, "2 Prozent von 1100");
+assert(LAHR.twoPercentCents(25) === 1, "halber Cent auf");
+assert(LAHR.twoPercentCents(24) === 0, "unter einem halben Cent");
+assert(LAHR.twoPercentCents(75) === 2, "anderthalb Cent");
+assert(LAHR.parseCents("400") === 40000, "400");
+assert(LAHR.parseCents("400,00") === 40000, "400,00");
+assert(LAHR.parseCents("1.100,00") === 110000, "1.100,00");
+assert(LAHR.SHOP.name === "Fritz Frank Schuhe + Sport KG", "Ladenname");
+assert(LAHR.SHOP.street === "In den Zehn Morgen 2", "Straße");
+assert(LAHR.SHOP.email === "info@schuh-frank.de", "E-Mail");
+
+var card = store.createCustomer({
+  name: "Ada Berger",
+  address: "Rheinstraße 1, Bretzenheim",
+  kundennummer: "k-12",
+  birthdayDay: "14",
+  birthdayMonth: "3",
+});
+assert(card.number.length === 8, "Kode-Länge");
+assert(card.kundennummer === "K-12", "Kundennummer");
+assert(card.birthdayDay === 14 && card.birthdayMonth === 3, "Geburtstag");
+assert(card.turnoverCents === 0, "Startumsatz");
+assert(card.remainingCents === 100000, "erste Stufe");
+assert(store.deviceCard().number === card.number, "Gerät merkt den Kode");
+
+var failed = false;
+try { store.book("", "400"); } catch (error) { failed = /Kundennummer/.test(error.message); }
+assert(failed, "ohne Nummer");
+failed = false;
+try { store.book("ZZZZZZZZ", "400"); } catch (error) { failed = /nicht/.test(error.message); }
+assert(failed, "fremde Nummer");
+
+var first = store.book(card.number.toLowerCase(), "400");
+assert(first.card.turnoverCents === 40000, "400 Euro");
+assert(first.card.reachedTierCents == null, "Stufe offen");
+assert(first.month.feeCents === 800, "8 Euro Gebühr");
+
+var second = store.book("K-12", "700");
+assert(second.card.turnoverCents === 110000, "Buchung über die Kundennummer");
+assert(second.card.reachedTierCents === 100000, "Stufe 1000");
+assert(second.card.benefits[0].reached === true, "Vorteil erreicht");
+assert(second.card.benefits[0].text.indexOf("1 Prozent") === 0, "Satz");
+assert(second.card.bonusPercent === 1, "1 Prozent");
+assert(second.card.bonusCents === 1100, "11 Euro Bonus");
+assert(first.card.bonusCents === 0, "vor der Stufe kein Bonus");
+assert(second.month.turnoverCents === 110000, "Monat");
+assert(second.month.feeCents === 2200, "22 Euro");
+
+failed = false;
+try { store.redeem(card.number, 300000); } catch (error) { failed = /noch nicht/.test(error.message); }
+assert(failed, "höhere Stufe");
+var marked = store.redeem(card.number, "100000");
+assert(marked.benefits[0].redeemed === true, "eingelöst");
+failed = false;
+try { store.redeem(card.number, 100000); } catch (error) { failed = /schon/.test(error.message); }
+assert(failed, "doppelt");
+
+store.updateBenefits({
+  100000: "Hinweis an der Kasse",
+  300000: LAHR.DEFAULT_BENEFITS[300000],
+  500000: LAHR.DEFAULT_BENEFITS[500000],
+  1000000: LAHR.DEFAULT_BENEFITS[1000000],
+});
+assert(store.lookup(card.number).benefits[0].text === "Hinweis an der Kasse", "Satz geändert");
+
+year = 2025;
+store.book(card.number, "500");
+year = 2026;
+assert(store.lookup(card.number).turnoverCents === 110000, "Vorjahr zählt nicht");
+assert(store.shop().month.feeCents === 2200, "Monatsgebühr bleibt");
+
+var wrote = store.postMessage(card.number, "Wann sind die Schuhe da?", "kunde");
+assert(wrote.messages[wrote.messages.length - 1].sender === "kunde", "Absender");
+assert(wrote.messages[wrote.messages.length - 1].text === "Wann sind die Schuhe da?", "Text");
+var reply = store.postMessage(card.number, "Morgen ab 8 Uhr.", "firma");
+assert(reply.messages[reply.messages.length - 1].sender === "firma", "Antwort");
+
+var jpeg = "data:image/jpeg;base64," + "/9j/" + "A".repeat(400);
+var shot = store.saveReceipt(card.number, jpeg);
+assert(shot.receipts.length === 1, "Speicher");
+assert(shot.receipt.jpeg.indexOf("data:image/jpeg") === 0, "Foto");
+var again = store.saveReceipt(card.number, jpeg);
+assert(again.receipts.length === 2, "zweite Rechnung");
+assert(again.receipts[0].jpeg === shot.receipt.jpeg, "erste bleibt");
+
+var legacy = memory();
+legacy.setItem("lahr-karte", JSON.stringify({
+  customers: [{
+    number: "AB23CD45",
+    name: "Alt",
+    address: "Weg 1",
+    kundennummer: "ALT-1",
+    purchases: [],
+    redemptions: [],
+    messages: [],
+    receipt: { storedAt: "2026-10-01T09:00:00", jpeg: jpeg },
+  }],
+  deviceKode: "AB23CD45",
+}));
+var legacyStore = LAHR.createStore(legacy, function () {
+  return { year: 2026, month: 10, iso: "2026-10-28T12:00:00" };
+});
+assert(legacyStore.deviceCard().receipts.length === 1, "alte Rechnung im Speicher");
+
+failed = false;
+try {
+  store.createCustomer({ name: "Bea", address: "Markt 2", kundennummer: "k-12", birthdayDay: "1", birthdayMonth: "1" });
+} catch (error) {
+  failed = /schon/.test(error.message);
+}
+assert(failed, "Kundennummer doppelt");
+
+console.log("Prüfung in Ordnung.");

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#71abd9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="LAHR">
+  <title>Kundenkarte LAHR</title>
+  <link rel="manifest" href="/manifest.json">
+  <link rel="apple-touch-icon" href="/logo.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body data-eingang="kunde">
+  <main>
+    <header class="top">
+      <!-- Platz für das Ladenzeichen: Datei static/logo.png.
+           Liegt sie da, erscheint sie hier. Sonst bleibt der Ladenname als Wortmarke. -->
+      <button type="button" id="logo-button" class="logo-button" aria-label="Fritz Frank Schuhe + Sport KG">
+        <img id="logo" class="logo" alt="" src="/logo.png" hidden>
+        <span id="wordmark" class="wordmark">LAHR</span>
+      </button>
+      <p class="role">Kundenkarte</p>
+      <div id="shop-lines" class="shop-lines"></div>
+    </header>
+    <nav class="switch" aria-label="Eingang">
+      <button type="button" id="tab-kunde" aria-pressed="true">Kunde</button>
+      <button type="button" id="tab-kasse" aria-pressed="false">Kasse</button>
+    </nav>
+    <div class="panels">
+      <section id="kunde" aria-label="Kunde">
+        <h2>Kunde</h2>
+        <p>Einen Moment.</p>
+      </section>
+      <section id="kasse" aria-label="Kasse">
+        <h2>Kasse</h2>
+      </section>
+    </div>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>

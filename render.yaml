@@ -1,0 +1,8 @@
+# Gleiche Art wie die Schmahl-App: statische Seite, kein Build, Publish-Verzeichnis ist der Ordner selbst.
+services:
+  - type: web
+    name: lahr-schuhe-koblenz
+    runtime: static
+    branch: main
+    buildCommand: ""
+    staticPublishPath: .

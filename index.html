@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#71abd9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="LAHR">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Kundenapp LAHR</title>
+  <link rel="icon" href="icon-192.png?v=3" type="image/png">
+  <link rel="apple-touch-icon" href="icon-512.png?v=3">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-eingang="kunde">
+  <main>
+    <header class="top">
+      <div class="logo-band">
+        <button type="button" id="logo-button" class="logo-button" aria-label="Fritz Frank Schuhe + Sport KG">
+          <img id="logo" class="logo" alt="" src="banner.png?v=4" hidden>
+          <span id="wordmark" class="wordmark">LAHR</span>
+        </button>
+      </div>
+      <p class="role">Kundenapp</p>
+    </header>
+    <nav class="switch" aria-label="Eingang">
+      <button type="button" id="tab-kunde" aria-pressed="true">Kunde</button>
+      <button type="button" id="tab-kasse" aria-pressed="false">Kasse</button>
+    </nav>
+    <div class="panels">
+      <section id="kunde" aria-label="Kunde">
+        <h2>Kunde</h2>
+        <p>Einen Moment.</p>
+      </section>
+      <section id="kasse" aria-label="Kasse">
+        <h2>Kasse</h2>
+      </section>
+    </div>
+    <div id="shop-lines" class="shop-lines"></div>
+    <p class="homepage"><a href="https://www.schuh-frank.de/">Homepage</a></p>
+  </main>
+  <div id="install-ask" class="install-ask" hidden>
+    <div class="install-card" role="dialog" aria-modal="true" aria-labelledby="install-title">
+      <h2 id="install-title">App installieren?</h2>
+      <p id="install-hint" class="hint" hidden></p>
+      <div class="install-actions">
+        <button type="button" id="install-yes">Ja</button>
+        <button type="button" id="install-no" class="quiet">Nein</button>
+      </div>
+    </div>
+  </div>
+  <script src="store.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

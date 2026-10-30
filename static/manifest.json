@@ -1,0 +1,16 @@
+{
+  "name": "Kundenkarte LAHR",
+  "short_name": "LAHR",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#bcdcf5",
+  "theme_color": "#71abd9",
+  "icons": [
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
