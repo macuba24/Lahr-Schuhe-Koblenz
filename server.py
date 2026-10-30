@@ -1,4 +1,4 @@
-"""Kundenkarte LAHR für Fritz Frank Schuhe + Sport KG. Ein Prozess, eine SQLite-Datei, kein Konto."""
+"""Kundenkarte LAHR für LAHR SCHUHE, Löhrstr. 51, 56068 Koblenz. Ein Prozess, eine SQLite-Datei, kein Konto."""
 
 from __future__ import annotations
 
@@ -46,20 +46,20 @@ MONTHS = (
 )
 
 SHOP = {
-    "name": "Fritz Frank Schuhe + Sport KG",
+    "name": "LAHR SCHUHE",
     "wordmark": "LAHR",
     "slogan": "Das ganze Jahr der Schuh von Lahr",
-    "street": "In den Zehn Morgen 2",
+    "street": "Löhrstr. 51",
     "district": "",
-    "postalCode": "55559",
-    "city": "Bretzenheim",
-    "phone": "(0671) 840 44-0",
-    "phoneHref": "tel:+49671840440",
-    "fax": "(0671) 840 44 90",
+    "postalCode": "56068",
+    "city": "Koblenz",
+    "country": "Deutschland",
+    "phone": "+49 (0) 261 100061",
+    "phoneHref": "tel:+49261100061",
+    "fax": "",
     "email": "info@schuh-frank.de",
     "website": "https://www.schuh-frank.de/",
     "hours": (
-        "Telefonservice laut Website: Mo.–Fr. 9:00–17:00 Uhr",
         "Filial-Öffnungszeiten: nur im Filialfinder, hier nicht eingetragen",
     ),
     "sortiment": "Damen, Herren, Kinder, Sport und Accessoires",
@@ -384,6 +384,7 @@ def laden_json(conn) -> dict:
         "district": SHOP["district"],
         "postalCode": SHOP["postalCode"],
         "city": SHOP["city"],
+        "country": SHOP["country"],
         "phone": SHOP["phone"],
         "phoneHref": SHOP["phoneHref"],
         "fax": SHOP["fax"],
@@ -698,14 +699,16 @@ def self_check() -> None:
         assert parse_cents("400,00") == 40_000
         assert parse_cents("1.100,00") == 110_000
         assert parse_cents("700") == 70_000
-        assert SHOP["name"] == "Fritz Frank Schuhe + Sport KG"
-        assert SHOP["street"] == "In den Zehn Morgen 2"
-        assert SHOP["postalCode"] == "55559"
-        assert SHOP["city"] == "Bretzenheim"
-        assert SHOP["phone"] == "(0671) 840 44-0"
+        assert SHOP["name"] == "LAHR SCHUHE"
+        assert SHOP["street"] == "Löhrstr. 51"
+        assert SHOP["postalCode"] == "56068"
+        assert SHOP["city"] == "Koblenz"
+        assert SHOP["country"] == "Deutschland"
+        assert SHOP["phone"] == "+49 (0) 261 100061"
+        assert SHOP["phoneHref"] == "tel:+49261100061"
+        assert SHOP["fax"] == ""
         assert SHOP["email"] == "info@schuh-frank.de"
-        assert "9:00" in SHOP["hours"][0] and "17:00" in SHOP["hours"][0]
-        assert "Filialfinder" in SHOP["hours"][1]
+        assert "Filialfinder" in SHOP["hours"][0]
         assert list(DEFAULT_BENEFITS) == list(TIERS)
         assert DEFAULT_BENEFITS[100_000].startswith("1 Prozent")
 
@@ -716,7 +719,7 @@ def self_check() -> None:
             assert {"customers", "purchases", "benefits", "redemptions"} <= names
             assert "lose" not in names and "shops" not in names
             laden = laden_json(conn)
-        assert laden["name"] == "Fritz Frank Schuhe + Sport KG"
+        assert laden["name"] == "LAHR SCHUHE"
         assert [tier["text"] for tier in laden["tiers"]] == list(DEFAULT_BENEFITS.values())
         assert laden["month"]["feeCents"] == 0
 

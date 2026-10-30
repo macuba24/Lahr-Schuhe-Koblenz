@@ -412,6 +412,7 @@ function renderShop(shop) {
   if (shop.postalCode || shop.city) {
     nodes.push(el("p", {}, [shop.postalCode, shop.city].filter(Boolean).join(" ")));
   }
+  add(shop.country);
   if (shop.phone) nodes.push(el("p", {}, el("a", { href: shop.phoneHref }, shop.phone)));
   if (shop.fax) add("Fax " + shop.fax);
   if (shop.email) nodes.push(el("p", {}, el("a", { href: "mailto:" + shop.email }, shop.email)));

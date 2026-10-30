@@ -25,8 +25,12 @@ assert(LAHR.twoPercentCents(75) === 2, "anderthalb Cent");
 assert(LAHR.parseCents("400") === 40000, "400");
 assert(LAHR.parseCents("400,00") === 40000, "400,00");
 assert(LAHR.parseCents("1.100,00") === 110000, "1.100,00");
-assert(LAHR.SHOP.name === "Fritz Frank Schuhe + Sport KG", "Ladenname");
-assert(LAHR.SHOP.street === "In den Zehn Morgen 2", "Straße");
+assert(LAHR.SHOP.name === "LAHR SCHUHE", "Ladenname");
+assert(LAHR.SHOP.street === "Löhrstr. 51", "Straße");
+assert(LAHR.SHOP.postalCode === "56068" && LAHR.SHOP.city === "Koblenz", "Ort");
+assert(LAHR.SHOP.country === "Deutschland", "Land");
+assert(LAHR.SHOP.phone === "+49 (0) 261 100061", "Telefon");
+assert(LAHR.SHOP.phoneHref === "tel:+49261100061", "Telefonlink");
 assert(LAHR.SHOP.email === "info@schuh-frank.de", "E-Mail");
 
 var card = store.createCustomer({

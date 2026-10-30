@@ -1,6 +1,6 @@
 # Kundenapp LAHR
 
-Kundenkarte für das Handy, aufgebaut wie die Schmahl-App. Name, Kundenkode, Buchung, Foto und Nachricht bleiben auf diesem Gerät. Die Marke ist LAHR, der Laden ist die Fritz Frank Schuhe + Sport KG.
+Kundenkarte für das Handy, aufgebaut wie die Schmahl-App. Name, Kundenkode, Buchung, Foto und Nachricht bleiben auf diesem Gerät. Die Marke ist LAHR, der Laden ist LAHR SCHUHE, Löhrstr. 51, 56068 Koblenz.
 
 ## Start
 
@@ -32,6 +32,6 @@ Die Adresse in Chrome öffnen und zum Startbildschirm hinzufügen. Kunde und Kas
 
 ## Kontakt laut Website
 
-Fritz Frank Schuhe + Sport KG, In den Zehn Morgen 2, 55559 Bretzenheim. Telefon (0671) 840 44-0, E-Mail info@schuh-frank.de, Website https://www.schuh-frank.de/
+LAHR SCHUHE, Löhrstr. 51, 56068 Koblenz, Deutschland. Telefon +49 (0) 261 100061, E-Mail info@schuh-frank.de, Website https://www.schuh-frank.de/
 
 Die Vorteilssätze (1/2/3/5 Prozent) sind die Kartenlogik dieser App und keine Preise von schuh-frank.de. An der Kasse lassen sie sich ändern. Filial-Öffnungszeiten stehen nur im Filialfinder der Website.
